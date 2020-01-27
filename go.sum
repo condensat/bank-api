@@ -1,5 +1,5 @@
-github.com/condensat/bank-core v0.0.1-0.20200124090000-9368579e2d70 h1:Y11RdQOTDWu7DbJkeoTnvtVELm35hu0tJz4LAYskaHU=
-github.com/condensat/bank-core v0.0.1-0.20200124090000-9368579e2d70/go.mod h1:ctXsOLVuIHeEk6gnAAicS7QqaS+ILHBKzjioAzGpqnY=
+github.com/condensat/bank-core v0.0.1-0.20200127170000-2b2c9d9c9d40 h1:hO0w9IFqbfD4ZoccHeXMxwz+uq4LKbIGID42ZlUDcl4=
+github.com/condensat/bank-core v0.0.1-0.20200127170000-2b2c9d9c9d40/go.mod h1:gvdiLDgLlWMX8ggPShv5H4FePVKMY+oGa/44cytRN7Q=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/denisenkom/go-mssqldb v0.0.0-20191124224453-732737034ffd/go.mod h1:xbL0rPBG9cCiLr28tMa8zpbdarY27NDyej4t/EjAShU=
 github.com/emef/bitfield v0.0.0-20170503144143-7d3f8f823065/go.mod h1:uN4GbWHfit2ByfOKQ4K6fuLy1/Os2eLynsIrDvjiDgM=
@@ -30,6 +30,7 @@ github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+W
 github.com/onsi/ginkgo v1.11.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/gomega v1.8.1/go.mod h1:Ho0h+IUsWyvy1OpqCwxlQ/21gkhVunqlU8fDGcoTdcA=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/shengdoushi/base58 v1.0.0/go.mod h1:m5uIILfzcKMw6238iWAhP4l3s5+uXyF3+bJKUNhAL9I=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=

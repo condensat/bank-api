@@ -1,5 +1,5 @@
-github.com/condensat/bank-core v0.0.1-0.20200204100000-0285feb646c6 h1:9PC/+9J/vxUacsoy+HQxsjfxn1WAvQNdrUpyj+eDVFg=
-github.com/condensat/bank-core v0.0.1-0.20200204100000-0285feb646c6/go.mod h1:UYrpfYHOkDEGJJ+amDWp/4KmIu3lncQMF8ITDltUS3o=
+github.com/condensat/bank-core v0.0.1-0.20200205090000-2daa0989a228 h1:Q+Ti87DqSFB0gT6LTEzcbW2Jbo3KRUGqsNcJ0hmRaKY=
+github.com/condensat/bank-core v0.0.1-0.20200205090000-2daa0989a228/go.mod h1:UYrpfYHOkDEGJJ+amDWp/4KmIu3lncQMF8ITDltUS3o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/denisenkom/go-mssqldb v0.0.0-20191124224453-732737034ffd/go.mod h1:xbL0rPBG9cCiLr28tMa8zpbdarY27NDyej4t/EjAShU=

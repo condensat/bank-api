@@ -58,7 +58,7 @@ func (p *Api) Run(ctx context.Context, port int) {
 	}()
 
 	log.WithFields(logrus.Fields{
-		"Hostname": getHost(),
+		"Hostname": GetHost(),
 		"Port":     port,
 	}).Info("Api Service started")
 
@@ -67,7 +67,7 @@ func (p *Api) Run(ctx context.Context, port int) {
 
 // AddWorkerHeader - adds header of which node actually processed request
 func AddWorkerHeader(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	rw.Header().Add("X-Worker", getHost())
+	rw.Header().Add("X-Worker", GetHost())
 	next(rw, r)
 }
 
@@ -77,7 +77,7 @@ func AddWorkerVersion(rw http.ResponseWriter, r *http.Request, next http.Handler
 	next(rw, r)
 }
 
-func getHost() string {
+func GetHost() string {
 	var err error
 	host, err := os.Hostname()
 	if err != nil {

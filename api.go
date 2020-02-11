@@ -16,13 +16,14 @@ import (
 	"github.com/condensat/bank-api/sessions"
 	"github.com/condensat/bank-core/logger"
 
+	"github.com/rs/cors"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/negroni"
 )
 
 type Api int
 
-func (p *Api) Run(ctx context.Context, port int) {
+func (p *Api) Run(ctx context.Context, port int, corsAllowedOrigins []string) {
 	log := logger.Logger(ctx).WithField("Method", "api.Api.Run")
 
 	muxer := http.NewServeMux()
@@ -34,6 +35,7 @@ func (p *Api) Run(ctx context.Context, port int) {
 	services.RegisterServices(ctx, muxer)
 
 	handler := negroni.New(&negroni.Recovery{})
+	handler.Use(cors.New(cors.Options{AllowedOrigins: corsAllowedOrigins}))
 	handler.Use(services.StatsMiddleware)
 	handler.UseFunc(MiddlewarePeerRateLimiter)
 	handler.UseFunc(AddWorkerHeader)
@@ -58,7 +60,7 @@ func (p *Api) Run(ctx context.Context, port int) {
 	}()
 
 	log.WithFields(logrus.Fields{
-		"Hostname": getHost(),
+		"Hostname": GetHost(),
 		"Port":     port,
 	}).Info("Api Service started")
 
@@ -67,7 +69,7 @@ func (p *Api) Run(ctx context.Context, port int) {
 
 // AddWorkerHeader - adds header of which node actually processed request
 func AddWorkerHeader(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	rw.Header().Add("X-Worker", getHost())
+	rw.Header().Add("X-Worker", GetHost())
 	next(rw, r)
 }
 
@@ -77,7 +79,7 @@ func AddWorkerVersion(rw http.ResponseWriter, r *http.Request, next http.Handler
 	next(rw, r)
 }
 
-func getHost() string {
+func GetHost() string {
 	var err error
 	host, err := os.Hostname()
 	if err != nil {

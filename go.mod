@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/condensat/bank-core v0.0.2-0.20200324160000-f071f33e0c39
-	github.com/go-redis/redis/v7 v7.0.0-beta.4
+	github.com/go-redis/redis/v7 v7.2.0
 	github.com/go-redis/redis_rate/v8 v8.0.0
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/rpc v1.2.0

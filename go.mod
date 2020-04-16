@@ -8,6 +8,7 @@ require (
 	github.com/go-redis/redis/v7 v7.2.0
 	github.com/go-redis/redis_rate/v8 v8.0.0
 	github.com/google/uuid v1.1.1
+	github.com/gorilla/mux v1.7.4
 	github.com/gorilla/rpc v1.2.0
 	github.com/rs/cors v1.7.0
 	github.com/shengdoushi/base58 v1.0.0

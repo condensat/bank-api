@@ -8,8 +8,8 @@ github.com/btcsuite/goleveldb v0.0.0-20160330041536-7834afc9e8cd/go.mod h1:F+uVa
 github.com/btcsuite/snappy-go v0.0.0-20151229074030-0bdef8d06723/go.mod h1:8woku9dyThutzjeg+3xrA5iCpBRH8XEEg3lh6TiUghc=
 github.com/btcsuite/websocket v0.0.0-20150119174127-31079b680792/go.mod h1:ghJtEyQwv5/p4Mg4C0fgbePVuGr935/5ddU9Z3TmDRY=
 github.com/btcsuite/winsvc v1.0.0/go.mod h1:jsenWakMcC0zFBFurPLEAyrnc/teJEM1O46fmI40EZs=
-github.com/condensat/bank-core v0.0.3-0.20200427070000-0f5fc29d845e h1:UIWa8EPum2YoZ+fr5gNcn5NT262RbPaUQOUucXjCy50=
-github.com/condensat/bank-core v0.0.3-0.20200427070000-0f5fc29d845e/go.mod h1:3kwNN1Er4c9IXCZWjsAGHR9epBSHBNirVue/r3sqKxg=
+github.com/condensat/bank-core v0.0.3-0.20200427150000-282837aab3c1 h1:/b5XXpRyscVdaDGTkeDfkf96zLw8s5oCQyLtut+gfgA=
+github.com/condensat/bank-core v0.0.3-0.20200427150000-282837aab3c1/go.mod h1:3kwNN1Er4c9IXCZWjsAGHR9epBSHBNirVue/r3sqKxg=
 github.com/condensat/btcd v0.20.1-beta.0.20200424100000-5dc523e373e2/go.mod h1:wVuoA8VJLEcwgqHBwHmzLRazpKxTv13Px/pDuV7OomQ=
 github.com/condensat/secureid v0.1.0 h1:x08lPpKf+qNZXvCIWkMF90l94tH5KgehXIV2vuWqi98=
 github.com/condensat/secureid v0.1.0/go.mod h1:uK99gtR8BlxJH7dw+f6Rd7mJ2OgvAUlTUA49ASfxLcM=

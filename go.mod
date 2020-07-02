@@ -3,7 +3,7 @@ module github.com/condensat/bank-api
 go 1.14
 
 require (
-	github.com/condensat/bank-core v0.0.5-0.20200622100000-95c808e7cbc0
+	github.com/condensat/bank-core v0.0.5-0.20200702070000-7577cdbe2e2b
 	github.com/condensat/secureid v0.1.0
 	github.com/go-redis/redis/v7 v7.2.0
 	github.com/go-redis/redis_rate/v8 v8.0.0

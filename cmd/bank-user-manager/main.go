@@ -8,7 +8,7 @@ import (
 	"context"
 	"flag"
 
-	"github.com/condensat/bank-api"
+	api "github.com/condensat/bank-api"
 	"github.com/condensat/bank-core/appcontext"
 	"github.com/condensat/bank-core/database"
 	"github.com/condensat/bank-core/logger"
@@ -46,7 +46,7 @@ func main() {
 	ctx := context.Background()
 	ctx = appcontext.WithOptions(ctx, args.App)
 	ctx = appcontext.WithHasherWorker(ctx, args.App.Hasher)
-	ctx = appcontext.WithDatabase(ctx, database.NewDatabase(args.Database))
+	ctx = appcontext.WithDatabase(ctx, database.New(args.Database))
 
 	migrateDatabase(ctx)
 

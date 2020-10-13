@@ -9,10 +9,16 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/condensat/bank-api/sessions"
-	"github.com/condensat/bank-core"
 	"github.com/condensat/bank-core/appcontext"
 	"github.com/condensat/bank-core/logger"
+	"github.com/condensat/bank-core/messaging"
+
+	"github.com/condensat/bank-core/database"
+	"github.com/condensat/bank-core/database/model"
+	"github.com/condensat/bank-core/database/query"
+
+	"github.com/condensat/bank-core/networking"
+	"github.com/condensat/bank-core/networking/sessions"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/rpc/v2"
@@ -25,14 +31,14 @@ var (
 func RegisterMessageHandlers(ctx context.Context) {
 	log := logger.Logger(ctx).WithField("Method", "RegisterMessageHandlers")
 
-	nats := appcontext.Messaging(ctx)
+	nats := messaging.FromContext(ctx)
 	nats.SubscribeWorkers(ctx, VerifySessionSubject, 4, sessions.VerifySession)
 
 	log.Debug("MessageHandlers registered")
 }
 
 func RegisterServices(ctx context.Context, mux *mux.Router, corsAllowedOrigins []string) {
-	corsHandler := CreateCorsOptions(corsAllowedOrigins)
+	corsHandler := networking.CreateCorsOptions(corsAllowedOrigins)
 
 	mux.Handle("/api/v1/session", corsHandler.Handler(NewSessionHandler(ctx)))
 	mux.Handle("/api/v1/user", corsHandler.Handler(NewUserHandler(ctx)))
@@ -44,11 +50,18 @@ func RegisterServices(ctx context.Context, mux *mux.Router, corsAllowedOrigins [
 func NewSessionHandler(ctx context.Context) http.Handler {
 	server := rpc.NewServer()
 
-	jsonCodec := NewCookieCodec(ctx)
+	jsonCodec := sessions.NewCookieCodec(ctx)
 	server.RegisterCodec(jsonCodec, "application/json")
 	server.RegisterCodec(jsonCodec, "application/json; charset=UTF-8") // For firefox 11 and other browsers which append the charset=UTF-8
 
-	err := server.RegisterService(new(SessionService), "session")
+	err := server.RegisterService(
+		NewSessionService(
+			func(ctx context.Context, login, password string) (uint64, bool, error) {
+				db := appcontext.Database(ctx)
+				userID, allowed, err := query.CheckCredential(ctx, db, model.Base58(login), model.Base58(password))
+				return uint64(userID), allowed, err
+			},
+		), "session")
 	if err != nil {
 		panic(err)
 	}
@@ -59,7 +72,7 @@ func NewSessionHandler(ctx context.Context) http.Handler {
 func NewUserHandler(ctx context.Context) http.Handler {
 	server := rpc.NewServer()
 
-	jsonCodec := NewCookieCodec(ctx)
+	jsonCodec := sessions.NewCookieCodec(ctx)
 	server.RegisterCodec(jsonCodec, "application/json")
 	server.RegisterCodec(jsonCodec, "application/json; charset=UTF-8") // For firefox 11 and other browsers which append the charset=UTF-8
 
@@ -74,7 +87,7 @@ func NewUserHandler(ctx context.Context) http.Handler {
 func NewAccountingHandler(ctx context.Context) http.Handler {
 	server := rpc.NewServer()
 
-	jsonCodec := NewCookieCodec(ctx)
+	jsonCodec := sessions.NewCookieCodec(ctx)
 	server.RegisterCodec(jsonCodec, "application/json")
 	server.RegisterCodec(jsonCodec, "application/json; charset=UTF-8") // For firefox 11 and other browsers which append the charset=UTF-8
 
@@ -89,7 +102,7 @@ func NewAccountingHandler(ctx context.Context) http.Handler {
 func NewWalletHandler(ctx context.Context) http.Handler {
 	server := rpc.NewServer()
 
-	jsonCodec := NewCookieCodec(ctx)
+	jsonCodec := sessions.NewCookieCodec(ctx)
 	server.RegisterCodec(jsonCodec, "application/json")
 	server.RegisterCodec(jsonCodec, "application/json; charset=UTF-8") // For firefox 11 and other browsers which append the charset=UTF-8
 
@@ -104,7 +117,7 @@ func NewWalletHandler(ctx context.Context) http.Handler {
 func NewSwapHandler(ctx context.Context) http.Handler {
 	server := rpc.NewServer()
 
-	jsonCodec := NewCookieCodec(ctx)
+	jsonCodec := sessions.NewCookieCodec(ctx)
 	server.RegisterCodec(jsonCodec, "application/json")
 	server.RegisterCodec(jsonCodec, "application/json; charset=UTF-8") // For firefox 11 and other browsers which append the charset=UTF-8
 
@@ -116,7 +129,7 @@ func NewSwapHandler(ctx context.Context) http.Handler {
 	return server
 }
 
-func ContextValues(ctx context.Context) (bank.Database, *sessions.Session, error) {
+func ContextValues(ctx context.Context) (database.Context, *sessions.Session, error) {
 	db := appcontext.Database(ctx)
 	session, err := sessions.ContextSession(ctx)
 	if db == nil || session == nil {

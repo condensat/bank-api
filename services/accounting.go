@@ -10,13 +10,15 @@ import (
 
 	"github.com/condensat/bank-core/appcontext"
 	"github.com/condensat/bank-core/currency/rate"
-	"github.com/condensat/bank-core/database"
 	"github.com/condensat/bank-core/database/model"
+	"github.com/condensat/bank-core/database/query"
 	"github.com/condensat/bank-core/logger"
+	"github.com/condensat/bank-core/security/secureid"
 	"github.com/condensat/bank-core/utils"
-	"github.com/condensat/secureid"
 
-	"github.com/condensat/bank-api/sessions"
+	"github.com/condensat/bank-core/networking"
+	"github.com/condensat/bank-core/networking/sessions"
+
 	"github.com/condensat/bank-core/accounting/client"
 
 	"github.com/sirupsen/logrus"
@@ -26,7 +28,7 @@ type AccountingService int
 
 // AccountRequest holds args for accounting requests
 type AccountRequest struct {
-	SessionArgs
+	sessions.SessionArgs
 	RateBase        string `json:"rateBase"`
 	WithEmptyCrypto bool   `json:"withEmptyCrypto"`
 }
@@ -70,7 +72,7 @@ type AccountResponse struct {
 func (p *AccountingService) List(r *http.Request, request *AccountRequest, reply *AccountResponse) error {
 	ctx := r.Context()
 	log := logger.Logger(ctx).WithField("Method", "AccountingService.List")
-	log = GetServiceRequestLog(log, r, "Accounting", "List")
+	log = networking.GetServiceRequestLog(log, r, "Accounting", "List")
 
 	// Retrieve context values
 	_, session, err := ContextValues(ctx)
@@ -81,7 +83,7 @@ func (p *AccountingService) List(r *http.Request, request *AccountRequest, reply
 	}
 
 	// Get userID from session
-	request.SessionID = GetSessionCookie(r)
+	request.SessionID = sessions.GetSessionCookie(r)
 	sessionID := sessions.SessionID(request.SessionID)
 	userID := session.UserSession(ctx, sessionID)
 	if !sessions.IsUserValid(userID) {
@@ -192,7 +194,7 @@ func (p *AccountingService) List(r *http.Request, request *AccountRequest, reply
 
 		var assetHash string
 		if info.Asset {
-			if asset, err := database.GetAssetByCurrencyName(appcontext.Database(ctx), model.CurrencyName(account.Currency.Name)); err == nil {
+			if asset, err := query.GetAssetByCurrencyName(appcontext.Database(ctx), model.CurrencyName(account.Currency.Name)); err == nil {
 				assetHash = string(asset.Hash)
 			}
 		}
@@ -231,7 +233,7 @@ func (p *AccountingService) List(r *http.Request, request *AccountRequest, reply
 
 // AccountHistoryRequest holds args for accounting history requests
 type AccountHistoryRequest struct {
-	SessionArgs
+	sessions.SessionArgs
 	AccountID string `json:"accountId"`
 	WithEmpty bool   `json:"withEmpty"`
 	From      int64  `json:"from"`
@@ -262,7 +264,7 @@ type AccountHistoryResponse struct {
 func (p *AccountingService) History(r *http.Request, request *AccountHistoryRequest, reply *AccountHistoryResponse) error {
 	ctx := r.Context()
 	log := logger.Logger(ctx).WithField("Method", "AccountingService.History")
-	log = GetServiceRequestLog(log, r, "Accounting", "History")
+	log = networking.GetServiceRequestLog(log, r, "Accounting", "History")
 
 	// Retrieve context values
 	_, session, err := ContextValues(ctx)
@@ -273,7 +275,7 @@ func (p *AccountingService) History(r *http.Request, request *AccountHistoryRequ
 	}
 
 	// Get userID from session
-	request.SessionID = GetSessionCookie(r)
+	request.SessionID = sessions.GetSessionCookie(r)
 	sessionID := sessions.SessionID(request.SessionID)
 	userID := session.UserSession(ctx, sessionID)
 	if !sessions.IsUserValid(userID) {

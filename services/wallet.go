@@ -9,10 +9,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/condensat/bank-api/sessions"
 	"github.com/condensat/bank-core/appcontext"
 	"github.com/condensat/bank-core/logger"
-	"github.com/condensat/secureid"
+	"github.com/condensat/bank-core/security/secureid"
+
+	"github.com/condensat/bank-core/networking"
+	"github.com/condensat/bank-core/networking/sessions"
 
 	accounting "github.com/condensat/bank-core/accounting/client"
 	"github.com/condensat/bank-core/wallet/client"
@@ -30,7 +32,7 @@ type WalletService int
 
 // WalletNextDepositRequest holds args for accounting requests
 type WalletNextDepositRequest struct {
-	SessionArgs
+	sessions.SessionArgs
 	AccountID string `json:"accountId"`
 }
 
@@ -46,7 +48,7 @@ type WalletNextDepositResponse struct {
 func (p *WalletService) NextDeposit(r *http.Request, request *WalletNextDepositRequest, reply *WalletNextDepositResponse) error {
 	ctx := r.Context()
 	log := logger.Logger(ctx).WithField("Method", "WalletService.NextDeposit")
-	log = GetServiceRequestLog(log, r, "Wallet", "NextDeposit")
+	log = networking.GetServiceRequestLog(log, r, "Wallet", "NextDeposit")
 
 	// Retrieve context values
 	_, session, err := ContextValues(ctx)
@@ -57,7 +59,7 @@ func (p *WalletService) NextDeposit(r *http.Request, request *WalletNextDepositR
 	}
 
 	// Get userID from session
-	request.SessionID = GetSessionCookie(r)
+	request.SessionID = sessions.GetSessionCookie(r)
 	sessionID := sessions.SessionID(request.SessionID)
 	userID := session.UserSession(ctx, sessionID)
 	if !sessions.IsUserValid(userID) {
@@ -152,7 +154,7 @@ func getChainFromCurrencyName(isCrypto bool, currencyName string) (string, error
 
 // WalletSendFundsRequest holds args for wallet requests
 type WalletSendFundsRequest struct {
-	SessionArgs
+	sessions.SessionArgs
 	AccountID     string  `json:"accountId"`
 	PublicAddress string  `json:"publicAddress"`
 	Amount        float64 `json:"amount"`
@@ -166,7 +168,7 @@ type WalletSendFundsResponse struct {
 func (p *WalletService) SendFunds(r *http.Request, request *WalletSendFundsRequest, reply *WalletSendFundsResponse) error {
 	ctx := r.Context()
 	log := logger.Logger(ctx).WithField("Method", "WalletService.SendFunds")
-	log = GetServiceRequestLog(log, r, "Wallet", "SendFunds")
+	log = networking.GetServiceRequestLog(log, r, "Wallet", "SendFunds")
 
 	// Retrieve context values
 	_, session, err := ContextValues(ctx)
@@ -177,7 +179,7 @@ func (p *WalletService) SendFunds(r *http.Request, request *WalletSendFundsReque
 	}
 
 	// Get userID from session
-	request.SessionID = GetSessionCookie(r)
+	request.SessionID = sessions.GetSessionCookie(r)
 	sessionID := sessions.SessionID(request.SessionID)
 	userID := session.UserSession(ctx, sessionID)
 	if !sessions.IsUserValid(userID) {
@@ -269,7 +271,7 @@ func (p *WalletService) SendFunds(r *http.Request, request *WalletSendFundsReque
 
 // WalletCancelWithdrawRequest holds args for wallet requests
 type WalletCancelWithdrawRequest struct {
-	SessionArgs
+	sessions.SessionArgs
 	WithdrawID string `json:"withdrawId"`
 }
 
@@ -282,7 +284,7 @@ type WalletCancelWithdrawResponse struct {
 func (p *WalletService) CancelWithdraw(r *http.Request, request *WalletCancelWithdrawRequest, reply *WalletCancelWithdrawResponse) error {
 	ctx := r.Context()
 	log := logger.Logger(ctx).WithField("Method", "WalletService.CancelWithdraw")
-	log = GetServiceRequestLog(log, r, "Wallet", "CancelWithdraw")
+	log = networking.GetServiceRequestLog(log, r, "Wallet", "CancelWithdraw")
 
 	// Retrieve context values
 	_, session, err := ContextValues(ctx)
@@ -293,7 +295,7 @@ func (p *WalletService) CancelWithdraw(r *http.Request, request *WalletCancelWit
 	}
 
 	// Get userID from session
-	request.SessionID = GetSessionCookie(r)
+	request.SessionID = sessions.GetSessionCookie(r)
 	sessionID := sessions.SessionID(request.SessionID)
 	userID := session.UserSession(ctx, sessionID)
 	if !sessions.IsUserValid(userID) {
@@ -332,7 +334,7 @@ func (p *WalletService) CancelWithdraw(r *http.Request, request *WalletCancelWit
 
 // WalletSendHistoryRequest holds args for wallet requests
 type WalletSendHistoryRequest struct {
-	SessionArgs
+	sessions.SessionArgs
 }
 
 type WithdrawInfo struct {
@@ -353,7 +355,7 @@ type WalletSendHistoryResponse struct {
 func (p *WalletService) SendHistory(r *http.Request, request *WalletSendHistoryRequest, reply *WalletSendHistoryResponse) error {
 	ctx := r.Context()
 	log := logger.Logger(ctx).WithField("Method", "WalletService.SendHistory")
-	log = GetServiceRequestLog(log, r, "Wallet", "SendHistory")
+	log = networking.GetServiceRequestLog(log, r, "Wallet", "SendHistory")
 
 	// Retrieve context values
 	_, session, err := ContextValues(ctx)
@@ -364,7 +366,7 @@ func (p *WalletService) SendHistory(r *http.Request, request *WalletSendHistoryR
 	}
 
 	// Get userID from session
-	request.SessionID = GetSessionCookie(r)
+	request.SessionID = sessions.GetSessionCookie(r)
 	sessionID := sessions.SessionID(request.SessionID)
 	userID := session.UserSession(ctx, sessionID)
 	if !sessions.IsUserValid(userID) {
